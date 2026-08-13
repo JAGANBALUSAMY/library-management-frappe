@@ -1,0 +1,1122 @@
+{% extends "templates/web.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block style %}
+
+<style>
+
+    /* =========================================================
+       Statistics
+       ========================================================= */
+
+    .lm-stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .lm-stat {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid var(--lm-border, #e5e7eb);
+        border-radius: 12px;
+        background: #ffffff;
+    }
+
+    .lm-stat-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #f3f4f6;
+    }
+
+    .lm-stat-icon svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    .lm-stat-num {
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    .lm-stat-label {
+        margin-top: 3px;
+        color: var(--lm-ink-2, #6b7280);
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       Toolbar
+       ========================================================= */
+
+    .lm-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .lm-search {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .lm-search svg {
+        position: absolute;
+        top: 50%;
+        left: 13px;
+        width: 17px;
+        height: 17px;
+        transform: translateY(-50%);
+        opacity: 0.55;
+    }
+
+    .lm-search input {
+        width: 100%;
+        height: 42px;
+        padding: 0 14px 0 40px;
+        border: 1px solid var(--lm-border, #d9dce1);
+        border-radius: 9px;
+        background: #ffffff;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .lm-search input:focus {
+        border-color: var(--lm-brand, #171717);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+
+    /* =========================================================
+       Filters
+       ========================================================= */
+
+    .lm-filters {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        flex-wrap: wrap;
+    }
+
+    .lm-chip {
+        padding: 7px 13px;
+        border: 1px solid var(--lm-border, #d9dce1);
+        border-radius: 999px;
+        background: #ffffff;
+        color: #555555;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+            background 0.15s ease,
+            color 0.15s ease,
+            border-color 0.15s ease;
+    }
+
+    .lm-chip:hover {
+        background: #f5f5f5;
+    }
+
+    .lm-chip.active {
+        border-color: var(--lm-brand, #171717);
+        background: var(--lm-brand, #171717);
+        color: #ffffff;
+    }
+
+
+    /* =========================================================
+       Card
+       ========================================================= */
+
+    .lm-card {
+        overflow-x: auto;
+        border: 1px solid var(--lm-border, #e5e7eb);
+        border-radius: 14px;
+        background: #ffffff;
+    }
+
+
+    /* =========================================================
+       Table
+       ========================================================= */
+
+    .lm-table {
+        width: 100%;
+        min-width: 700px;
+        border-collapse: collapse;
+    }
+
+    .lm-table th {
+        padding: 14px 18px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #f8f9fa;
+        color: #555555;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-align: left;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .lm-table td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #eeeeee;
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .lm-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .lm-table tbody tr:hover {
+        background: #fafafa;
+    }
+
+
+    /* =========================================================
+       Member
+       ========================================================= */
+
+    .lm-member-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 9px;
+        border-radius: 6px;
+        background: #f3f4f6;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+
+    /* =========================================================
+       Book
+       ========================================================= */
+
+    .lm-book {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .lm-cover {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 52px;
+        flex-shrink: 0;
+        border-radius: 6px;
+        background: #f0f1f3;
+        color: #555555;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .lm-title {
+        margin-bottom: 3px;
+        font-weight: 700;
+    }
+
+    .lm-sub {
+        color: var(--lm-ink-2, #6b7280);
+        font-size: 12px;
+    }
+
+    .lm-muted-cell {
+        color: var(--lm-ink-2, #6b7280);
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+       Status Badge
+       ========================================================= */
+
+    .lm-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .lm-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .lm-badge-pending {
+        background: #fff4d6;
+        color: #9a6700;
+    }
+
+    .lm-badge-issued {
+        background: #e8f4ff;
+        color: #1769aa;
+    }
+
+    .lm-badge-overdue {
+        background: #fdecec;
+        color: #dc3545;
+    }
+
+    .lm-badge-returned {
+        background: #eaf7ee;
+        color: #198757;
+    }
+
+
+    /* =========================================================
+       Footer
+       ========================================================= */
+
+    .lm-foot {
+        margin-top: 12px;
+        color: var(--lm-ink-2, #6b7280);
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       Empty State
+       ========================================================= */
+
+    .lm-empty {
+        padding: 70px 25px;
+        text-align: center;
+    }
+
+    .lm-empty-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 18px;
+        border-radius: 14px;
+        background: #f3f4f6;
+    }
+
+    .lm-empty-icon svg {
+        width: 28px;
+        height: 28px;
+        opacity: 0.6;
+    }
+
+    .lm-empty h4 {
+        margin: 0 0 8px;
+        font-size: 20px;
+    }
+
+    .lm-empty p {
+        max-width: 500px;
+        margin: 0 auto 20px;
+        color: var(--lm-ink-2, #6b7280);
+    }
+
+
+    /* =========================================================
+       Button
+       ========================================================= */
+
+    .lm-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 40px;
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        text-decoration: none !important;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .lm-btn-primary {
+        background: var(--lm-brand, #171717);
+        border-color: var(--lm-brand, #171717);
+        color: #ffffff !important;
+    }
+
+    .lm-btn-primary:hover {
+        background: #333333;
+        color: #ffffff !important;
+    }
+
+    .lm-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+
+    /* =========================================================
+       Responsive
+       ========================================================= */
+
+    @media (max-width: 1000px) {
+
+        .lm-stats {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .lm-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .lm-search {
+            max-width: none;
+        }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+        .lm-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .lm-stat {
+            padding: 14px;
+        }
+
+        .lm-stat-icon {
+            width: 36px;
+            height: 36px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+{% block page_content %}
+
+{% if records %}
+
+<!-- =========================================================
+     Statistics
+     ========================================================= -->
+
+<div class="lm-stats">
+
+```
+<!-- Total -->
+
+<div class="lm-stat lm-stat-is-total">
+
+    <div class="lm-stat-icon">
+
+        <svg>
+            <use href="#i-stack"/>
+        </svg>
+
+    </div>
+
+    <div>
+
+        <div class="lm-stat-num">
+            {{ stats.total }}
+        </div>
+
+        <div class="lm-stat-label">
+            Total requests
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Pending -->
+
+<div class="lm-stat lm-stat-is-pending">
+
+    <div class="lm-stat-icon">
+
+        <svg>
+            <use href="#i-clock"/>
+        </svg>
+
+    </div>
+
+    <div>
+
+        <div class="lm-stat-num">
+            {{ stats.Pending }}
+        </div>
+
+        <div class="lm-stat-label">
+            Pending approval
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Issued -->
+
+<div class="lm-stat lm-stat-is-issued">
+
+    <div class="lm-stat-icon">
+
+        <svg>
+            <use href="#i-check"/>
+        </svg>
+
+    </div>
+
+    <div>
+
+        <div class="lm-stat-num">
+            {{ stats.Issued }}
+        </div>
+
+        <div class="lm-stat-label">
+            Issued to you
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Overdue -->
+
+<div class="lm-stat lm-stat-is-overdue">
+
+    <div class="lm-stat-icon">
+
+        <svg>
+            <use href="#i-alert"/>
+        </svg>
+
+    </div>
+
+    <div>
+
+        <div class="lm-stat-num">
+            {{ stats.Overdue }}
+        </div>
+
+        <div class="lm-stat-label">
+            Overdue
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Returned -->
+
+<div class="lm-stat lm-stat-is-returned">
+
+    <div class="lm-stat-icon">
+
+        <svg>
+            <use href="#i-back"/>
+        </svg>
+
+    </div>
+
+    <div>
+
+        <div class="lm-stat-num">
+            {{ stats.Returned }}
+        </div>
+
+        <div class="lm-stat-label">
+            Returned
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- =========================================================
+     Search + Filters
+     ========================================================= -->
+
+<div class="lm-toolbar">
+
+```
+<!-- Search -->
+
+<div class="lm-search">
+
+    <svg>
+        <use href="#i-search"/>
+    </svg>
+
+    <input
+        id="bh-search"
+        type="text"
+        placeholder="Search by book title, author or member..."
+        autocomplete="off"
+    >
+
+</div>
+
+
+<!-- Status Filters -->
+
+<div
+    class="lm-filters"
+    id="bh-filters"
+>
+
+    <button
+        type="button"
+        class="lm-chip active"
+        data-filter="all"
+    >
+        All
+    </button>
+
+    <button
+        type="button"
+        class="lm-chip"
+        data-filter="Pending"
+    >
+        Pending
+    </button>
+
+    <button
+        type="button"
+        class="lm-chip"
+        data-filter="Issued"
+    >
+        Issued
+    </button>
+
+    <button
+        type="button"
+        class="lm-chip"
+        data-filter="Overdue"
+    >
+        Overdue
+    </button>
+
+    <button
+        type="button"
+        class="lm-chip"
+        data-filter="Returned"
+    >
+        Returned
+    </button>
+
+</div>
+```
+
+</div>
+
+<!-- =========================================================
+     Borrow History Table
+     ========================================================= -->
+
+<div class="lm-card">
+
+```
+<table class="lm-table">
+
+    <thead>
+
+        <tr>
+
+            {% if is_librarian %}
+
+            <th>
+                Member
+            </th>
+
+            {% endif %}
+
+            <th>
+                Book
+            </th>
+
+            <th>
+                Borrow Date
+            </th>
+
+            <th>
+                Due Date
+            </th>
+
+            <th>
+                Status
+            </th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody id="bh-rows">
+
+
+        {% for record in records %}
+
+
+        <tr
+            data-status="{{ record.status }}"
+            data-search="
+                {{ (record.book_name or '')|lower }}
+                {{ (record.author or '')|lower }}
+                {{ (record.member or '')|lower }}
+            "
+        >
+
+
+            <!-- Member -->
+
+            {% if is_librarian %}
+
+            <td>
+
+                <span class="lm-member-tag">
+                    {{ record.member }}
+                </span>
+
+            </td>
+
+            {% endif %}
+
+
+            <!-- Book -->
+
+            <td>
+
+                <div class="lm-book">
+
+
+                    <div class="lm-cover">
+
+                        {{ (record.book_name or '?')[:1] }}
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="lm-title">
+
+                            {{ record.book_name }}
+
+                        </div>
+
+
+                        <div class="lm-sub">
+
+                            {{ record.author or 'Author unknown' }}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </td>
+
+
+            <!-- Borrow Date -->
+
+            <td class="lm-muted-cell">
+
+                {{ record.borrow_date or '—' }}
+
+            </td>
+
+
+            <!-- Due Date -->
+
+            <td class="lm-muted-cell">
+
+                {{ record.due_date or '—' }}
+
+            </td>
+
+
+            <!-- Status -->
+
+            <td>
+
+                <span
+                    class="lm-badge lm-badge-{{ record.status|lower }}"
+                >
+
+                    <span class="lm-dot"></span>
+
+                    {{ record.status }}
+
+                </span>
+
+            </td>
+
+
+        </tr>
+
+
+        {% endfor %}
+
+
+    </tbody>
+
+</table>
+```
+
+</div>
+
+<!-- =========================================================
+     Result Count
+     ========================================================= -->
+
+<div
+    class="lm-foot"
+    id="bh-foot"
+>
+    {{ stats.total }} request(s) found
+</div>
+
+<!-- =========================================================
+     JavaScript
+     ========================================================= -->
+
+<script>
+
+(function () {
+
+
+    /* =========================================================
+       Elements
+       ========================================================= */
+
+    var searchInput =
+        document.getElementById(
+            "bh-search"
+        );
+
+
+    var chips =
+        document.querySelectorAll(
+            "#bh-filters .lm-chip"
+        );
+
+
+    var rows =
+        Array.prototype.slice.call(
+            document.querySelectorAll(
+                "#bh-rows tr"
+            )
+        );
+
+
+    var footer =
+        document.getElementById(
+            "bh-foot"
+        );
+
+
+    var activeFilter =
+        "all";
+
+
+    /* =========================================================
+       Apply Search + Status Filter
+       ========================================================= */
+
+    function applyFilters() {
+
+
+        var q = "";
+
+
+        if (searchInput) {
+
+            q =
+                (
+                    searchInput.value ||
+                    ""
+                )
+                .toLowerCase()
+                .trim();
+
+        }
+
+
+        var visible =
+            0;
+
+
+        rows.forEach(
+            function (row) {
+
+
+                var status =
+                    row.getAttribute(
+                        "data-status"
+                    ) || "";
+
+
+                var searchText =
+                    row.getAttribute(
+                        "data-search"
+                    ) || "";
+
+
+                /*
+                 * Check status.
+                 */
+
+                var matchesFilter =
+                    activeFilter === "all" ||
+                    status === activeFilter;
+
+
+                /*
+                 * Check search.
+                 */
+
+                var matchesSearch =
+                    !q ||
+                    searchText.indexOf(q) !== -1;
+
+
+                /*
+                 * Final result.
+                 */
+
+                var shouldShow =
+                    matchesFilter &&
+                    matchesSearch;
+
+
+                row.style.display =
+                    shouldShow
+                        ? ""
+                        : "none";
+
+
+                if (shouldShow) {
+
+                    visible++;
+
+                }
+
+            }
+        );
+
+
+        /*
+         * Update result counter.
+         */
+
+        if (footer) {
+
+            footer.textContent =
+                visible +
+                " request(s) found";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       Search Event
+       ========================================================= */
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            applyFilters
+        );
+
+    }
+
+
+    /* =========================================================
+       Filter Buttons
+       ========================================================= */
+
+    chips.forEach(
+        function (chip) {
+
+
+            chip.addEventListener(
+                "click",
+                function () {
+
+
+                    /*
+                     * Remove active state.
+                     */
+
+                    chips.forEach(
+                        function (currentChip) {
+
+                            currentChip.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+
+                    /*
+                     * Activate clicked chip.
+                     */
+
+                    chip.classList.add(
+                        "active"
+                    );
+
+
+                    /*
+                     * Get selected filter.
+                     */
+
+                    activeFilter =
+                        chip.getAttribute(
+                            "data-filter"
+                        ) || "all";
+
+
+                    /*
+                     * Apply changes.
+                     */
+
+                    applyFilters();
+
+                }
+            );
+
+        }
+    );
+
+
+    /*
+     * Run once on page load.
+     */
+
+    applyFilters();
+
+
+})();
+
+</script>
+
+{% else %}
+
+<!-- =========================================================
+     Empty State
+     ========================================================= -->
+
+<div class="lm-card">
+
+```
+<div class="lm-empty">
+
+
+    <div class="lm-empty-icon">
+
+        <svg>
+            <use href="#i-book"/>
+        </svg>
+
+    </div>
+
+
+    {% if is_librarian %}
+
+
+    <h4>
+        No borrow requests yet
+    </h4>
+
+
+    <p>
+        Nothing has been requested so far.
+        New requests will appear here.
+    </p>
+
+
+    {% else %}
+
+
+    <h4>
+        You haven't borrowed any books yet
+    </h4>
+
+
+    <p>
+        Browse the catalog and borrow your first book —
+        it takes less than a minute.
+    </p>
+
+
+    {% endif %}
+
+
+    {% if not is_librarian %}
+
+
+    <a
+        class="lm-btn lm-btn-primary"
+        href="/books"
+    >
+
+        <svg>
+            <use href="#i-book"/>
+        </svg>
+
+        Browse Catalog
+
+    </a>
+
+
+    {% endif %}
+
+
+</div>
+```
+
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4">
+            {% if cover_image %}
+            <img src="{{ cover_image }}" alt="{{ book_name }}" class="img-fluid rounded shadow">
+            {% else %}
+            <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded shadow" style="height: 300px;">
+                <span>No Image Available</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h1 class="display-4">{{ book_name }}</h1>
+            <h4 class="text-muted">by {{ author or 'Unknown Author' }}</h4>
+            <hr>
+            
+            <dl class="row mt-4">
+                <dt class="col-sm-3">ISBN</dt>
+                <dd class="col-sm-9">{{ isbn }}</dd>
+                
+                <dt class="col-sm-3">Category</dt>
+                <dd class="col-sm-9">{{ category or 'Uncategorized' }}</dd>
+                
+                <dt class="col-sm-3">Publisher</dt>
+                <dd class="col-sm-9">{{ publisher or 'Unknown' }}</dd>
+                
+                <dt class="col-sm-3">Price</dt>
+                <dd class="col-sm-9">{{ frappe.utils.fmt_money(price) }}</dd>
+                
+                <dt class="col-sm-3">Availability</dt>
+                <dd class="col-sm-9">
+                    {% if available_copies > 0 %}
+                        <span class="badge badge-success" style="background-color: #28a745;">{{ available_copies }} Available</span>
+                    {% else %}
+                        <span class="badge badge-danger" style="background-color: #dc3545;">Out of Stock</span>
+                    {% endif %}
+                </dd>
+            </dl>
+            
+            <div class="mt-4">
+                <a href="/borrow-book?book={{ name }}" class="btn btn-primary {% if available_copies <= 0 %}disabled{% endif %}">
+                    Borrow This Book
+                </a>
+                <a href="/library" class="btn btn-outline-secondary ms-2">Back to Library</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

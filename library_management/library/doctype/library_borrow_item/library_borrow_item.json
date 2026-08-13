@@ -1,0 +1,56 @@
+{
+ "actions": [],
+ "creation": "2026-08-11 10:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "book",
+  "book_author",
+  "copies"
+ ],
+ "fields": [
+  {
+   "fieldname": "book",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Book",
+   "options": "Library Book",
+   "reqd": 1
+  },
+  {
+   "fieldname": "book_author",
+   "fieldtype": "Data",
+   "fetch_from": "book.author",
+   "in_list_view": 1,
+   "label": "Author",
+   "read_only": 1
+  },
+  {
+   "fieldname": "copies",
+   "fieldtype": "Int",
+   "default": "1",
+   "in_list_view": 1,
+   "label": "Copies",
+   "non_negative": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-08-11 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Library",
+ "name": "Library Borrow Item",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "parent": "Library Borrow Record",
+ "parentfield": "borrow_items",
+ "parenttype": "DocType",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "book",
+ "istable": 1
+}

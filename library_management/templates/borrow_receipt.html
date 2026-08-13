@@ -1,0 +1,35 @@
+<!-- TOPIC 10: Jinja API -->
+<!-- This is a sample Jinja Print Format template for Library Borrow Record -->
+
+<div class="receipt" style="font-family: Arial, sans-serif; max-width: 400px; padding: 20px; border: 1px solid #ccc;">
+    <h2 style="text-align: center;">Library Receipt</h2>
+    
+    <p><strong>Member ID:</strong> {{ doc.library_member }}</p>
+    <p><strong>Date Issued:</strong> {{ frappe.utils.format_date(doc.issue_date) }}</p>
+    
+    <table class="table" style="width: 100%; text-align: left; margin-top: 20px;">
+        <tr>
+            <th>Book ID</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>{{ doc.book }}</td>
+            <td>
+                <!-- Example of Jinja condition -->
+                {% if doc.status == "Returned" %}
+                    <span style="color: green;">Returned</span>
+                {% else %}
+                    <span style="color: red;">{{ doc.status }}</span>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    
+    <!-- Fetching related data not directly on the doc -->
+    {% set book_name = frappe.db.get_value("Library Book", doc.book, "book_name") %}
+    {% if book_name %}
+        <p style="margin-top: 20px; font-style: italic;">
+            Thank you for borrowing "{{ book_name }}". Please return it on time!
+        </p>
+    {% endif %}
+</div>

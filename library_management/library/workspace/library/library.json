@@ -1,0 +1,177 @@
+{
+ "_liked_by": "[]",
+ "app": "library_management",
+ "charts": [
+  {
+   "chart_name": "Background Job Activity",
+   "label": "Background"
+  }
+ ],
+ "content": "[{\"id\": \"c2b773f48b\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Shortcuts</b></span>\", \"col\": 12}}, {\"id\": \"93727f18c2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Books\", \"col\": 3}}, {\"id\": \"3944be0b77\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Members\", \"col\": 3}}, {\"id\": \"2c7417973e\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Authors\", \"col\": 3}}, {\"id\": \"778a5b22fa\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Publishers\", \"col\": 3}}, {\"id\": \"ee29f7f7a3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Categories\", \"col\": 3}}, {\"id\": \"dd592962e4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Borrow Records\", \"col\": 3}}, {\"id\": \"8b9f13e4e5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Fines\", \"col\": 3}}, {\"id\": \"15b2512024\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"7fc23ba188\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Quick Lists</b></span>\", \"col\": 12}}, {\"id\": \"ebf75ecf42\", \"type\": \"quick_list\", \"data\": {\"quick_list_name\": \"Library Book\", \"col\": 4, \"quick_list_filter\": \"[[\\\\\\\"Library Book\\\\\\\", \\\\\\\"available_copies\\\\\\\", \\\\\\\">\\\\\\\", 0]]\"}}, {\"id\": \"d732a6fdd2\", \"type\": \"quick_list\", \"data\": {\"quick_list_name\": \"Library Member\", \"col\": 4}}, {\"id\": \"912cb3fd55\", \"type\": \"quick_list\", \"data\": {\"quick_list_name\": \"Library Borrow Record\", \"col\": 4}}, {\"id\": \"d07fd781e3\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"d70ffa1e99\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Masters &amp; Transactions</b></span>\", \"col\": 12}}, {\"id\": \"4410b6fa52\", \"type\": \"card\", \"data\": {\"card_name\": \"Masters\", \"col\": 4}}, {\"id\": \"724d17d6ac\", \"type\": \"card\", \"data\": {\"card_name\": \"Transactions\", \"col\": 4}}]",
+ "creation": "2026-07-31 16:45:32.573486",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "hide_custom": 0,
+ "icon": "book-open",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Library",
+ "link_type": "DocType",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Library Book",
+   "link_count": 0,
+   "link_to": "Library Book",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Library Member",
+   "link_count": 0,
+   "link_to": "Library Member",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Library Author",
+   "link_count": 0,
+   "link_to": "Library Author",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Library Publisher",
+   "link_count": 0,
+   "link_to": "Library Publisher",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Library Category",
+   "link_count": 0,
+   "link_to": "Library Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Library Borrow Record",
+   "link_count": 0,
+   "link_to": "Library Borrow Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Library Fine",
+   "link_count": 0,
+   "link_to": "Library Fine",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-08-12 12:56:22.771396",
+ "modified_by": "Administrator",
+ "module": "Library",
+ "name": "Library",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Library Book",
+   "label": "Library Book"
+  },
+  {
+   "document_type": "Library Member",
+   "label": "Library Member"
+  },
+  {
+   "document_type": "Library Borrow Record",
+   "label": "Library Borrow Record"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 0.0,
+ "shortcuts": [
+  {
+   "doc_view": "",
+   "label": "Books",
+   "link_to": "Library Book",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "Members",
+   "link_to": "Library Member",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "Authors",
+   "link_to": "Library Author",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "Publishers",
+   "link_to": "Library Publisher",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "Categories",
+   "link_to": "Library Category",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "Borrow Records",
+   "link_to": "Library Borrow Record",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "Fines",
+   "link_to": "Library Fine",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "Inventory Report",
+   "link_to": "Library Inventory Report",
+   "report_ref_doctype": "Library Book",
+   "type": "Report"
+  },
+  {
+   "doc_view": "",
+   "label": "Borrow Statistics",
+   "link_to": "Library Borrowing Statistics",
+   "report_ref_doctype": "Library Borrow Record",
+   "type": "Report"
+  }
+ ],
+ "title": "Library",
+ "type": "Workspace"
+}

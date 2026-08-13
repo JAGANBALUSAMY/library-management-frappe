@@ -1,0 +1,443 @@
+{% extends "templates/web.html" %}
+
+{% block title %}
+    {{ library_name or 'Frappe Library' }}
+{% endblock %}
+
+{% block style %}
+
+<style>
+
+    /* =========================================================
+       Modal (Check Availability)
+       library.css does not carry these rules, so they live here.
+       Without them the modal is an unstyled, always-visible
+       block at the bottom of the page and the button looks dead.
+       ========================================================= */
+
+    #lm-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.50);
+    }
+
+    #lm-modal-content {
+        position: relative;
+        width: 100%;
+        max-width: 440px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 24px;
+        border-radius: 16px;
+        background: #ffffff;
+        font-family: var(--lm-font, inherit);
+        box-shadow: var(--lm-shadow-lg, 0 20px 60px rgba(0, 0, 0, 0.20));
+    }
+
+    #lm-modal-close {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        background: #f3f4f6;
+        color: #333333;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    #lm-modal-close:hover {
+        background: #e5e7eb;
+    }
+
+    .lm-book-details {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .lm-book-details h3 {
+        margin: 0 0 14px;
+        font-size: 22px;
+        font-weight: 800;
+    }
+
+    .lm-book-details p {
+        margin: 6px 0;
+        color: var(--lm-ink-2, #6b7280);
+    }
+
+    .lm-book-details strong {
+        color: #333333;
+    }
+
+    .lm-loading {
+        padding: 25px;
+        text-align: center;
+        color: var(--lm-ink-2, #6b7280);
+    }
+
+    .lm-error {
+        padding: 15px;
+        border-radius: 8px;
+        color: #dc3545;
+        background: #fdecec;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block page_content %}
+
+<div class="lm-page">
+
+    <!-- Page Header -->
+    <div class="lm-page-header">
+        <div>
+            <div class="lm-eyebrow">LIBRARY MANAGEMENT</div>
+            <h1>Library Collection</h1>
+            <p>Browse our collection and check book availability.</p>
+        </div>
+    </div>
+
+
+    <!-- Featured Collection -->
+    <section class="lm-section">
+
+        <div class="lm-section-heading">
+            <div>
+                <h2>Featured Collection</h2>
+                <p>Available books in the library</p>
+            </div>
+        </div>
+
+
+        {% if books %}
+
+        <div class="lm-grid">
+
+            {% for book in books %}
+
+            <div class="lm-tile">
+
+                <!-- Book Cover -->
+                <div class="lm-tile-cover">
+
+                    <div class="lm-book-initial">
+                        {{ (book.display_name or '?')[:1] }}
+                    </div>
+
+                    {% if book.price_display %}
+                    <span class="lm-tile-price">
+                        {{ book.price_display }}
+                    </span>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Book Information -->
+                <div class="lm-tile-body">
+
+                    <div class="lm-tile-title">
+                        {{ book.display_name }}
+                    </div>
+
+                    <div class="lm-tile-author">
+                        by {{ book.author_name or 'Unknown Author' }}
+                    </div>
+
+
+                    <!-- Stock -->
+                    <div class="lm-tile-stock">
+
+                        {% if book.available_copies > 0 %}
+
+                        <span class="lm-badge lm-badge-issued">
+                            <span class="lm-dot"></span>
+                            {{ book.available_copies }} in stock
+                        </span>
+
+                        {% else %}
+
+                        <span class="lm-badge lm-badge-overdue">
+                            <span class="lm-dot"></span>
+                            Out of stock
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Actions -->
+                    <div class="lm-tile-actions">
+
+                        <a
+                            class="lm-btn lm-btn-sm lm-btn-outline"
+                            href="/{{ book.route }}">
+                            Details
+                        </a>
+
+
+                        <button
+                            type="button"
+                            class="lm-btn lm-btn-sm lm-btn-primary lm-check-availability"
+                            data-book="{{ book.name }}">
+                            Check Availability
+                        </button>
+
+
+                        {% if book.available_copies > 0 %}
+
+                        <a
+                            class="lm-btn lm-btn-sm lm-btn-primary"
+                            href="/borrow-book?book={{ book.name }}">
+                            Borrow
+                        </a>
+
+                        {% else %}
+
+                        <button
+                            type="button"
+                            class="lm-btn lm-btn-sm lm-btn-disabled"
+                            disabled>
+                            Borrow
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <!-- Empty State -->
+        <div class="lm-card">
+
+            <div class="lm-empty">
+
+                <div class="lm-empty-icon">
+                    📚
+                </div>
+
+                <h3>No books available</h3>
+
+                <p>
+                    Check back soon — new titles are added regularly.
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+
+<!-- Availability Modal -->
+<div
+    id="lm-modal"
+    class="lm-modal"
+    aria-hidden="true">
+
+    <div class="lm-modal-content">
+
+        <!-- Close Button -->
+        <button
+            type="button"
+            id="lm-modal-close"
+            class="lm-modal-close"
+            aria-label="Close">
+            ×
+        </button>
+
+
+        <!-- Modal Header -->
+        <div class="lm-modal-header">
+            <div class="lm-modal-icon">
+                📖
+            </div>
+
+            <div>
+                <div class="lm-modal-eyebrow">
+                    BOOK DETAILS
+                </div>
+
+                <h3>
+                    Availability
+                </h3>
+            </div>
+        </div>
+
+
+        <!-- AJAX Result -->
+        <div id="lm-modal-body">
+
+            <div class="lm-loading">
+                Loading book details...
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     Availability Script
+     ========================================================= -->
+
+<script>
+
+(function () {
+
+
+    /* =========================================================
+       Availability HTML Template
+       ========================================================= */
+
+    var lmAvailabilityTemplate = function (data) {
+
+        var html = '';
+
+        html += '<div class="lm-book-details">';
+
+        html += '<h3>' + (data.book_name || "Unknown Book") + '</h3>';
+        html += '<p><strong>Author:</strong> ' + (data.author_name || "N/A") + '</p>';
+        html += '<p><strong>ISBN:</strong> ' + (data.isbn || "N/A") + '</p>';
+        html += '<p><strong>Category:</strong> ' + (data.category_name || "N/A") + '</p>';
+        html += '<p><strong>Price:</strong> ' + (data.price || "N/A") + '</p>';
+
+        html += '<p><strong>Status:</strong> ';
+        if (data.availability === "Available") {
+            html += '<span style="color:#198757;font-weight:700;">Available (' + (data.available_copies || 0) + ' copies)</span>';
+        } else {
+            html += '<span style="color:#dc3545;font-weight:700;">Out of Stock</span>';
+        }
+        html += '</p>';
+
+        html += '</div>';
+
+        return html;
+
+    };
+
+
+    /* =========================================================
+       Check Availability
+       ========================================================= */
+
+    function lmCheckAvailability(bookName) {
+
+        console.log("[Library] Check Availability clicked:", bookName);
+
+        if (!bookName) {
+            console.error("[Library] ERROR: bookName is empty");
+            return;
+        }
+
+        var modal = document.getElementById("lm-modal");
+        var modalBody = document.getElementById("lm-modal-body");
+
+        if (!modal || !modalBody) {
+            console.error("[Library] ERROR: modal elements not found");
+            return;
+        }
+
+        modalBody.innerHTML = '<div class="lm-loading">Loading book details...</div>';
+        modal.style.display = "flex";
+
+        console.log("[Library] Calling API: get_book_details");
+
+        frappe.call({
+            method: "library_management.api.get_book_details",
+            args: { book_name: bookName },
+            callback: function (r) {
+                console.log("[Library] API callback:", r);
+                if (r && r.message) {
+                    modalBody.innerHTML = lmAvailabilityTemplate(r.message);
+                } else {
+                    console.error("[Library] NO MESSAGE in response", r);
+                    modalBody.innerHTML = '<div class="lm-error">No book details were returned.</div>';
+                }
+            },
+            error: function (r) {
+                console.error("[Library] API ERROR:", r);
+                modalBody.innerHTML = '<div class="lm-error">Unable to load book details. Check console.</div>';
+            }
+        });
+    }
+
+
+    /* =========================================================
+       Check Availability Button
+       ========================================================= */
+
+    document.addEventListener("click", function (e) {
+        var btn = e.target.closest ? e.target.closest(".lm-check-availability") : null;
+        if (btn) {
+            console.log("[Library] Button found. data-book:", btn.getAttribute("data-book"));
+            lmCheckAvailability(btn.getAttribute("data-book"));
+        }
+    });
+
+
+    /* =========================================================
+       Close Modal
+       ========================================================= */
+
+    function closeModal() {
+        var modal = document.getElementById("lm-modal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    var closeButton = document.getElementById("lm-modal-close");
+    if (closeButton) {
+        closeButton.addEventListener("click", closeModal);
+    }
+
+    var modal = document.getElementById("lm-modal");
+    if (modal) {
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            closeModal();
+        }
+    });
+
+
+})();
+
+</script>
+
+{% endblock %}

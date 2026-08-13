@@ -1,0 +1,1142 @@
+{% extends "templates/web.html" %}
+
+{% block title %}
+Books
+{% endblock %}
+
+{% block style %}
+
+<style>
+
+    /* =========================================================
+       Books Page
+       ========================================================= */
+
+    .lm-books-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 24px 70px;
+    }
+
+
+    /* =========================================================
+       Header
+       ========================================================= */
+
+    .lm-books-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .lm-books-header h1 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 800;
+    }
+
+    .lm-books-header p {
+        margin: 6px 0 0;
+        color: var(--lm-ink-2, #6b7280);
+    }
+
+
+    /* =========================================================
+       Search
+       ========================================================= */
+
+    .lm-search-wrapper {
+        margin-bottom: 30px;
+    }
+
+    #cat-search {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px 16px;
+        border: 1px solid var(--lm-border, #d9dce1);
+        border-radius: 10px;
+        background: #ffffff;
+        font-size: 14px;
+        outline: none;
+    }
+
+    #cat-search:focus {
+        border-color: var(--lm-brand, #171717);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+    }
+
+
+    /* =========================================================
+       Grid
+       ========================================================= */
+
+    .lm-grid {
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(280px, 1fr)
+        );
+        gap: 24px;
+    }
+
+
+    /* =========================================================
+       Book Tile
+       ========================================================= */
+
+    .lm-tile {
+        overflow: hidden;
+        border: 1px solid var(--lm-border, #e5e7eb);
+        border-radius: 14px;
+        background: #ffffff;
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .lm-tile:hover {
+        transform: translateY(-3px);
+        box-shadow: var(
+            --lm-shadow-lg,
+            0 12px 35px rgba(0, 0, 0, 0.10)
+        );
+    }
+
+
+    /* =========================================================
+       Book Cover
+       ========================================================= */
+
+    .lm-tile-cover {
+        position: relative;
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f3f4f6;
+        font-size: 52px;
+        font-weight: 800;
+    }
+
+    .lm-tile-price {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 5px 9px;
+        border-radius: 6px;
+        background: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* =========================================================
+       Book Body
+       ========================================================= */
+
+    .lm-tile-body {
+        padding: 18px;
+    }
+
+    .lm-tile-title {
+        margin-bottom: 5px;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .lm-tile-author {
+        margin-bottom: 14px;
+        color: var(--lm-ink-2, #6b7280);
+        font-size: 14px;
+    }
+
+
+    /* =========================================================
+       Stock
+       ========================================================= */
+
+    .lm-tile-stock {
+        margin-bottom: 18px;
+    }
+
+    .lm-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .lm-badge-issued {
+        color: #198757;
+        background: #eaf7ee;
+    }
+
+    .lm-badge-overdue {
+        color: #dc3545;
+        background: #fdecec;
+    }
+
+    .lm-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+
+    /* =========================================================
+       Actions
+       ========================================================= */
+
+    .lm-tile-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .lm-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 8px 13px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none !important;
+        cursor: pointer;
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease,
+            transform 0.15s ease;
+    }
+
+    .lm-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .lm-btn-sm {
+        flex: 1;
+    }
+
+    .lm-btn-primary {
+        color: #ffffff !important;
+        background: var(--lm-brand, #171717);
+        border-color: var(--lm-brand, #171717);
+    }
+
+    .lm-btn-primary:hover {
+        color: #ffffff !important;
+        background: #333333;
+    }
+
+    .lm-btn-outline {
+        color: var(--lm-brand, #171717) !important;
+        background: transparent;
+        border-color: var(--lm-border, #d1d5db);
+    }
+
+    .lm-btn-outline:hover {
+        background: #f5f5f5;
+    }
+
+
+    /* =========================================================
+       Disabled Button
+       ========================================================= */
+
+    .lm-btn-disabled {
+        color: #999999 !important;
+        background: #f2f2f2;
+        border-color: #e2e2e2;
+        cursor: not-allowed;
+    }
+
+
+    /* =========================================================
+       Modal
+       ========================================================= */
+
+    #lm-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.50);
+    }
+
+    #lm-modal-content {
+        position: relative;
+        width: 100%;
+        max-width: 440px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 24px;
+        border-radius: 16px;
+        background: #ffffff;
+        font-family: var(--lm-font, inherit);
+        box-shadow: var(
+            --lm-shadow-lg,
+            0 20px 60px rgba(0, 0, 0, 0.20)
+        );
+    }
+
+
+    /* =========================================================
+       Modal Close
+       ========================================================= */
+
+    #lm-modal-close {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        background: #f3f4f6;
+        color: #333333;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    #lm-modal-close:hover {
+        background: #e5e7eb;
+    }
+
+
+    /* =========================================================
+       Modal Book Details
+       ========================================================= */
+
+    .lm-book-details {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .lm-book-details h3 {
+        margin: 0 0 14px;
+        font-size: 22px;
+        font-weight: 800;
+    }
+
+    .lm-book-details p {
+        margin: 6px 0;
+        color: var(--lm-ink-2, #6b7280);
+    }
+
+    .lm-book-details strong {
+        color: #333333;
+    }
+
+
+    /* =========================================================
+       Loading / Error
+       ========================================================= */
+
+    .lm-loading {
+        padding: 25px;
+        text-align: center;
+        color: var(--lm-ink-2, #6b7280);
+    }
+
+    .lm-error {
+        padding: 15px;
+        border-radius: 8px;
+        color: #dc3545;
+        background: #fdecec;
+    }
+
+
+    /* =========================================================
+       Responsive
+       ========================================================= */
+
+    @media (max-width: 768px) {
+
+        .lm-books-page {
+            padding: 25px 16px 50px;
+        }
+
+        .lm-books-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .lm-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .lm-tile-actions {
+            flex-direction: column;
+        }
+
+        #lm-modal-content {
+            max-width: 95%;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+{% block page_content %}
+
+<div class="lm-books-page">
+
+<!-- =====================================================
+     Header
+     ===================================================== -->
+
+<div class="lm-books-header">
+
+    <div>
+
+        <h1>
+            Books
+        </h1>
+
+        <p>
+            Browse the library collection and check availability.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     Search
+     ===================================================== -->
+
+<div class="lm-search-wrapper">
+
+    <input
+        type="text"
+        id="cat-search"
+        placeholder="Search books..."
+        autocomplete="off"
+    >
+
+</div>
+
+
+<!-- =====================================================
+     Book Grid
+     ===================================================== -->
+
+{% if books %}
+
+<div id="cat-grid" class="lm-grid">
+
+    {% for book in books %}
+
+    <div
+        class="lm-tile"
+        data-search="
+            {{ book.display_name or '' }}
+            {{ book.author_name or '' }}
+            {{ book.category_name or '' }}
+            {{ book.isbn or '' }}
+        "
+    >
+
+
+        <!-- Book Cover -->
+
+        <div class="lm-tile-cover">
+
+            {{ (book.display_name or '?')[:1] }}
+
+            {% if book.price_display %}
+
+            <span class="lm-tile-price">
+                {{ book.price_display }}
+            </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Book Information -->
+
+        <div class="lm-tile-body">
+
+
+            <div class="lm-tile-title">
+                {{ book.display_name }}
+            </div>
+
+
+            <div class="lm-tile-author">
+
+                by
+                {{ book.author_name or 'Unknown Author' }}
+
+            </div>
+
+
+            <!-- Stock -->
+
+            <div class="lm-tile-stock">
+
+                {% if book.available_copies > 0 %}
+
+                <span class="lm-badge lm-badge-issued">
+
+                    <span class="lm-dot"></span>
+
+                    {{ book.available_copies }}
+                    in stock
+
+                </span>
+
+                {% else %}
+
+                <span class="lm-badge lm-badge-overdue">
+
+                    <span class="lm-dot"></span>
+
+                    Out of stock
+
+                </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Actions -->
+
+            <div class="lm-tile-actions">
+
+
+                <!-- Details -->
+
+                <a
+                    class="lm-btn lm-btn-sm lm-btn-outline"
+                    href="/{{ book.route }}"
+                >
+                    Details
+                </a>
+
+
+                <!-- Check Availability -->
+
+                <button
+                    type="button"
+                    class="lm-btn lm-btn-sm lm-btn-primary lm-check-availability"
+                    data-book="{{ book.name }}"
+                >
+                    Check Availability
+                </button>
+
+
+                <!-- Borrow -->
+
+                {% if book.available_copies > 0 %}
+
+                <a
+                    class="lm-btn lm-btn-sm lm-btn-primary"
+                    href="/borrow-book?book={{ book.name }}"
+                >
+                    Borrow
+                </a>
+
+                {% else %}
+
+                <button
+                    type="button"
+                    class="lm-btn lm-btn-sm lm-btn-disabled"
+                    disabled
+                >
+                    Borrow
+                </button>
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% else %}
+
+
+<!-- =====================================================
+     Empty State
+     ===================================================== -->
+
+<div class="lm-card">
+
+    <div style="text-align:center;padding:50px 20px;">
+
+        <div style="font-size:42px;margin-bottom:15px;">
+            📚
+        </div>
+
+        <h3>
+            No books available
+        </h3>
+
+        <p>
+            Check back soon — new titles are added regularly.
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+</div>
+
+<!-- =========================================================
+     Availability Modal
+     ========================================================= -->
+
+<div id="lm-modal">
+
+<div id="lm-modal-content">
+
+
+    <!-- Close -->
+
+    <button
+        type="button"
+        id="lm-modal-close"
+        aria-label="Close"
+    >
+        ×
+    </button>
+
+
+    <!-- AJAX Result -->
+
+    <div id="lm-modal-body">
+
+        <div class="lm-loading">
+            Loading book details...
+        </div>
+
+    </div>
+
+
+    <!-- Modal Footer -->
+
+    <div
+        style="
+            text-align:right;
+            margin-top:16px;
+        "
+    >
+
+        <button
+            type="button"
+            id="lm-modal-close-footer"
+            class="lm-btn lm-btn-sm lm-btn-outline"
+            style="
+                max-width:100px;
+                background:var(--lm-brand-soft,#f3f4f6);
+                color:var(--lm-brand,#171717);
+                border:none;
+            "
+        >
+            Close
+        </button>
+
+    </div>
+
+
+</div>
+
+</div>
+
+<script>
+
+(function () {
+
+
+    /* =========================================================
+       Category / Book Search
+       ========================================================= */
+
+    var input =
+        document.getElementById("cat-search");
+
+
+    var tiles =
+        Array.prototype.slice.call(
+            document.querySelectorAll(
+                "#cat-grid .lm-tile"
+            )
+        );
+
+
+    if (input) {
+
+        input.addEventListener(
+            "input",
+            function () {
+
+                var q =
+                    (input.value || "")
+                        .toLowerCase()
+                        .trim();
+
+
+                tiles.forEach(
+                    function (tile) {
+
+                        var searchText =
+                            (
+                                tile.getAttribute(
+                                    "data-search"
+                                ) || ""
+                            )
+                            .toLowerCase();
+
+
+                        tile.style.display =
+                            !q ||
+                            searchText.indexOf(q) !== -1
+                                ? ""
+                                : "none";
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       Availability HTML Template
+       ========================================================= */
+
+    var lmAvailabilityTemplate =
+        function (data) {
+
+            var html = '';
+
+
+            html +=
+                '<div class="lm-book-details">';
+
+
+            /* Book Name */
+
+            html +=
+                '<h3>' +
+                (data.book_name || "Unknown Book") +
+                '</h3>';
+
+
+            /* Author */
+
+            html +=
+                '<p>' +
+                '<strong>Author:</strong> ' +
+                (data.author_name || "N/A") +
+                '</p>';
+
+
+            /* ISBN */
+
+            html +=
+                '<p>' +
+                '<strong>ISBN:</strong> ' +
+                (data.isbn || "N/A") +
+                '</p>';
+
+
+            /* Category */
+
+            html +=
+                '<p>' +
+                '<strong>Category:</strong> ' +
+                (data.category_name || "N/A") +
+                '</p>';
+
+
+            /* Price */
+
+            html +=
+                '<p>' +
+                '<strong>Price:</strong> ' +
+                (data.price || "N/A") +
+                '</p>';
+
+
+            /* Availability */
+
+            html +=
+                '<p>' +
+                '<strong>Status:</strong> ';
+
+
+            if (
+                data.availability ===
+                "Available"
+            ) {
+
+                html +=
+                    '<span style="' +
+                    'color:#198757;' +
+                    'font-weight:700;' +
+                    '">' +
+
+                    'Available (' +
+                    (data.available_copies || 0) +
+                    ' copies)' +
+
+                    '</span>';
+
+            }
+
+            else {
+
+                html +=
+                    '<span style="' +
+                    'color:#dc3545;' +
+                    'font-weight:700;' +
+                    '">' +
+
+                    'Out of Stock' +
+
+                    '</span>';
+
+            }
+
+
+            html += '</p>';
+
+
+            html += '</div>';
+
+
+            /*
+             * IMPORTANT
+             *
+             * Return the generated HTML.
+             */
+
+            return html;
+
+        };
+
+
+    /* =========================================================
+       Check Availability
+       ========================================================= */
+
+    function lmCheckAvailability(
+        bookName
+    ) {
+
+
+        if (!bookName) {
+
+            console.error(
+                "Book name is missing."
+            );
+
+            return;
+
+        }
+
+
+        var modal =
+            document.getElementById(
+                "lm-modal"
+            );
+
+
+        var modalBody =
+            document.getElementById(
+                "lm-modal-body"
+            );
+
+
+        if (
+            !modal ||
+            !modalBody
+        ) {
+
+            console.error(
+                "Library modal elements were not found."
+            );
+
+            return;
+
+        }
+
+
+        /* Show modal */
+
+        modalBody.innerHTML =
+            '<div class="lm-loading">' +
+            'Loading book details...' +
+            '</div>';
+
+
+        modal.style.display =
+            "flex";
+
+
+        /* =====================================================
+           Frappe AJAX Call
+           ===================================================== */
+
+        frappe.call({
+
+            method:
+                "library_management.api.get_book_details",
+
+
+            args: {
+
+                book_name:
+                    bookName
+
+            },
+
+
+            callback:
+                function (r) {
+
+
+                    if (
+                        r &&
+                        r.message
+                    ) {
+
+
+                        /*
+                         * Convert API response
+                         * into HTML.
+                         */
+
+                        var html =
+                            lmAvailabilityTemplate(
+                                r.message
+                            );
+
+
+                        /*
+                         * Put HTML inside modal.
+                         */
+
+                        modalBody.innerHTML =
+                            html;
+
+
+                    }
+
+                    else {
+
+
+                        modalBody.innerHTML =
+                            '<div class="lm-error">' +
+                            'No book details were returned.' +
+                            '</div>';
+
+                    }
+
+                },
+
+
+            error:
+                function (r) {
+
+
+                    console.error(
+                        "get_book_details API error:",
+                        r
+                    );
+
+
+                    modalBody.innerHTML =
+                        '<div class="lm-error">' +
+                        'Unable to load book details.' +
+                        '</div>';
+
+                }
+
+        });
+
+    }
+
+
+    /* =========================================================
+       Check Availability Button
+       ========================================================= */
+
+    document.addEventListener(
+        "click",
+        function (e) {
+
+
+            var btn =
+                e.target.closest
+                    ? e.target.closest(
+                        ".lm-check-availability"
+                    )
+                    : null;
+
+
+            if (btn) {
+
+
+                var bookName =
+                    btn.getAttribute(
+                        "data-book"
+                    );
+
+
+                lmCheckAvailability(
+                    bookName
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       Close Modal
+       ========================================================= */
+
+    function closeModal() {
+
+        var modal =
+            document.getElementById(
+                "lm-modal"
+            );
+
+
+        if (modal) {
+
+            modal.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* Close X button */
+
+    var closeButton =
+        document.getElementById(
+            "lm-modal-close"
+        );
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+    }
+
+
+    /* Close footer button */
+
+    var footerCloseButton =
+        document.getElementById(
+            "lm-modal-close-footer"
+        );
+
+
+    if (footerCloseButton) {
+
+        footerCloseButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+    }
+
+
+    /* =========================================================
+       Close Modal when clicking outside
+       ========================================================= */
+
+    var modal =
+        document.getElementById(
+            "lm-modal"
+        );
+
+
+    if (modal) {
+
+        modal.addEventListener(
+            "click",
+            function (e) {
+
+
+                if (
+                    e.target === modal
+                ) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       Close with ESC
+       ========================================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (e) {
+
+            if (
+                e.key === "Escape"
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+})();
+
+</script>
+
+{% endblock %}

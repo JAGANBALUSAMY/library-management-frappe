@@ -1,0 +1,27 @@
+.web-form-container {
+	max-width: 760px;
+	margin: 0 auto;
+}
+
+.web-form-introduction {
+	background: #f8f9fa;
+	border-left: 4px solid #2490ef;
+	padding: 1rem 1.25rem;
+	border-radius: 4px;
+	margin-bottom: 1.5rem;
+}
+
+.web-form-introduction h3 {
+	color: #1f272e;
+	margin-top: 0;
+}
+
+.web-form-introduction ol {
+	margin-bottom: 0;
+}
+
+.web-form .frappe-control[data-fieldname="library_book"] .help,
+.web-form .frappe-control[data-fieldname="member"] .help {
+	font-style: italic;
+	color: #6b7280;
+}

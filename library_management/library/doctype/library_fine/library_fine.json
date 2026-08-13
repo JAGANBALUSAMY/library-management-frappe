@@ -1,0 +1,121 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-07-30 13:14:19.308189",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "borrow_record",
+  "fine_amount",
+  "paid",
+  "payment_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "borrow_record",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Borrow Record",
+   "options": "Library Borrow Record",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_amount",
+   "fieldtype": "Currency",
+   "label": "Fine Amount"
+  },
+  {
+   "default": "0",
+   "fieldname": "paid",
+   "fieldtype": "Check",
+   "label": "Paid"
+  },
+  {
+   "fieldname": "payment_date",
+   "fieldtype": "Date",
+   "label": "Payment Date"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "LIB-FINE-.#####"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-07-30 13:17:18.766465",
+ "modified_by": "Administrator",
+ "module": "Library",
+ "name": "Library Fine",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "Library Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "import": 1,
+   "export": 1,
+   "share": 1,
+   "select": 0
+  },
+  {
+   "role": "Library Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "import": 0,
+   "export": 1,
+   "share": 0,
+   "select": 0
+  },
+  {
+   "role": "Librarian",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "print": 1,
+   "email": 0,
+   "report": 1,
+   "import": 0,
+   "export": 0,
+   "share": 0,
+   "select": 0
+  },
+  {
+   "role": "Library Member",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "print": 0,
+   "email": 0,
+   "report": 0,
+   "import": 0,
+   "export": 0,
+   "share": 0,
+   "select": 0
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "borrow_record"
+}
