@@ -1,0 +1,29 @@
+msgctxt,msgid,msgstr
+_,Library,Biblioteca
+_,Books,Libros
+_,Members,Afiliados
+_,Borrow History,Historial de Préstamos
+_,Borrow Book,Prestar Libro
+_,Available,Disponible
+_,Out of Stock,Agotado
+_,Borrow Date,Fecha de Préstamo
+_,Due Date,Fecha de Vencimiento
+_,Return Date,Fecha de Devolución
+_,Status,Estado
+_,Submit Borrow Request,Enviar Solicitud de Préstamo
+_,Request Submitted,Solicitud Enviada
+_,"Book '{0}' is out of stock.","El libro '{0}' está agotado."
+_,You do not have permission to access this record.,No tiene permiso para acceder a este registro.
+_,Library Collection,Colección de la Biblioteca
+_,Browse our collection and check book availability.,Explora nuestra colección y consulta la disponibilidad.
+_,Featured Collection,Colección Destacada
+_,Available books in the library,Libros disponibles en la biblioteca
+_,Check Availability,Consultar Disponibilidad
+_,Loading book details...,Cargando detalles del libro...
+_,Unable to load book details.,No se pudieron cargar los detalles del libro.
+_,No book details were returned.,No se devolvieron detalles del libro.
+_,Book Name,Nombre del Libro
+_,Author,Autor
+_,ISBN,ISBN
+_,Category,Categoría
+_,Price,Precio

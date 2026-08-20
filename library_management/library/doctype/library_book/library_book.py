@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.website.website_generator import WebsiteGenerator
 
 class LibraryBook(WebsiteGenerator):
@@ -24,13 +25,13 @@ class LibraryBook(WebsiteGenerator):
         super().validate()  # WebsiteGenerator.validate -> generates the website route
 
         if not self.book_name:
-            frappe.throw("Book Name is required.")
+            frappe.throw(_("Book Name is required."))
 
         if self.price is not None and self.price < 0:
-            frappe.throw("Price cannot be negative.")
+            frappe.throw(_("Price cannot be negative."))
             
         if self.available_copies is not None and self.available_copies < 0:
-            frappe.throw("Available Copies cannot be negative.")
+            frappe.throw(_("Available Copies cannot be negative."))
 
         self.validate_duplicate_isbn()
 
@@ -49,7 +50,7 @@ class LibraryBook(WebsiteGenerator):
                 }
             )
             if exists:
-                frappe.throw(f"A book with ISBN {self.isbn} already exists.")
+                frappe.throw(_("A book with ISBN {0} already exists.").format(self.isbn))
 
     def before_save(self):
         """Set default calculated values before DB write."""

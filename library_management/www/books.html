@@ -794,7 +794,7 @@ Books
 
             html +=
                 '<p>' +
-                '<strong>Status:</strong> ';
+                '<strong>' + __('Status:') + '</strong> ';
 
 
             if (
@@ -808,9 +808,9 @@ Books
                     'font-weight:700;' +
                     '">' +
 
-                    'Available (' +
+                    __('Available (') +
                     (data.available_copies || 0) +
-                    ' copies)' +
+                    __(' copies)') +
 
                     '</span>';
 
@@ -824,7 +824,7 @@ Books
                     'font-weight:700;' +
                     '">' +
 
-                    'Out of Stock' +
+                    __('Out of Stock') +
 
                     '</span>';
 

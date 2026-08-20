@@ -13,7 +13,7 @@
  "docstatus": 0,
  "doctype": "Workspace",
  "hide_custom": 0,
- "icon": "book-open",
+ "icon": "library-big",
  "idx": 0,
  "indicator_color": "green",
  "is_hidden": 0,
@@ -91,8 +91,8 @@
    "type": "Link"
   }
  ],
- "modified": "2026-08-12 12:56:22.771396",
- "modified_by": "Administrator",
+ "modified": "2026-08-20 12:15:49.340655",
+ "modified_by": "admin@gmail.com",
  "module": "Library",
  "name": "Library",
  "number_cards": [],

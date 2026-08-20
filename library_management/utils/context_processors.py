@@ -1,8 +1,9 @@
 import frappe
 
+from library_management.utils.cache import available_published_count
+
+
 def library_context(context):
 	context.library_name = "Frappe Library"
-	context.available_book_count = frappe.db.count(
-		"Library Book", {"published": 1, "available_copies": (">", 0)}
-	)
+	context.available_book_count = available_published_count()
 	return context

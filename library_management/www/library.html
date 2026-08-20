@@ -104,8 +104,8 @@
     <div class="lm-page-header">
         <div>
             <div class="lm-eyebrow">LIBRARY MANAGEMENT</div>
-            <h1>Library Collection</h1>
-            <p>Browse our collection and check book availability.</p>
+            <h1>{{ _("Library Collection") }}</h1>
+            <p>{{ _("Browse our collection and check book availability.") }}</p>
         </div>
     </div>
 
@@ -115,8 +115,8 @@
 
         <div class="lm-section-heading">
             <div>
-                <h2>Featured Collection</h2>
-                <p>Available books in the library</p>
+                <h2>{{ _("Featured Collection") }}</h2>
+                <p>{{ _("Available books in the library") }}</p>
             </div>
         </div>
 
@@ -330,11 +330,11 @@
         html += '<p><strong>Category:</strong> ' + (data.category_name || "N/A") + '</p>';
         html += '<p><strong>Price:</strong> ' + (data.price || "N/A") + '</p>';
 
-        html += '<p><strong>Status:</strong> ';
+        html += '<p><strong>' + __('Status:') + '</strong> ';
         if (data.availability === "Available") {
-            html += '<span style="color:#198757;font-weight:700;">Available (' + (data.available_copies || 0) + ' copies)</span>';
+            html += '<span style="color:#198757;font-weight:700;">' + __('Available (') + (data.available_copies || 0) + __(' copies)</span>';
         } else {
-            html += '<span style="color:#dc3545;font-weight:700;">Out of Stock</span>';
+            html += '<span style="color:#dc3545;font-weight:700;">' + __('Out of Stock') + '</span>';
         }
         html += '</p>';
 

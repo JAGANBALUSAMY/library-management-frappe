@@ -9,6 +9,7 @@ website_generators = ["Library Book"]
 
 app_include_css = ["/assets/library_management/css/library.css"]
 web_include_css = ["/assets/library_management/css/library.css"]
+app_include_js = "custom_desk.bundle.js"
 
 # Apps
 # ------------------
@@ -154,8 +155,24 @@ has_permission = {
 
 doc_events = {
 	"Library Book": {
-		"before_save": "library_management.tasks.before_book_save"
-	}
+		"before_save": "library_management.tasks.before_book_save",
+		"on_update": "library_management.utils.cache.invalidate_on_book_change",
+		"after_insert": "library_management.utils.cache.invalidate_on_book_change",
+	},
+	"Library Borrow Record": {
+		"on_update": [
+			"library_management.utils.cache.invalidate_on_borrow_change",
+			"library_management.utils.integrations.google_calendar.sync_borrow_due_date",
+		]
+	},
+}
+
+# Link field display formatters
+link_formatters = {
+	"Library Member": "library_management.utils.link_formatters.library_member",
+	"Library Author": "library_management.utils.link_formatters.library_author",
+	"Library Publisher": "library_management.utils.link_formatters.library_publisher",
+	"Library Book": "library_management.utils.link_formatters.library_book",
 }
 
 # Scheduled Tasks
