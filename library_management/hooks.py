@@ -183,7 +183,8 @@ link_formatters = {
 
 scheduler_events = {
 	"daily": [
-		"library_management.tasks.daily_check"
+		"library_management.tasks.daily_check",
+		"library_management.custom_module.tasks.daily_maintenance"
 	]
 }
 

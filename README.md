@@ -1,180 +1,228 @@
-Library Management
+# Library Management
 
 Library Management System built with Frappe Framework v16.
 
-Assignment: Basics Python API
+---
 
-This assignment demonstrates document lifecycle management and safely extending DocType behavior using Controllers and Hooks in Frappe.
+# Assignment 1 — Basics Python API
 
-Part 1 — Controller Lifecycle
+This assignment demonstrates DocType Controllers, document lifecycle events, and Hooks.
 
-A custom Test Document DocType was created with a Description field.
+## 1. Controller Lifecycle
 
-The generated Python controller was extended using the before_save() lifecycle method.
+Created a **Test Document** DocType with a Description field.
 
-class TestDocument(Document):
+Implemented the `before_save()` lifecycle method in the DocType controller to automatically set a default description when the Description field is empty.
 
-    def before_save(self):
+### Verify
 
-        if not self.description:
+Go to:
 
-            self.description = "Default Description"
+**Desk → Test Document → New**
 
-When a Test Document is saved without a Description, Frappe automatically sets:
+Leave **Description** empty and save the document.
 
-Default Description
+The Description will automatically become:
 
-The generated controller structure and type annotations are managed by Frappe and were not manually modified.
+`Default Description`
 
-Part 2 — Safe Overrides Using Hooks
+**Code:**  
+`library_management/library/doctype/test_document/test_document.py`
 
-The standard Frappe behavior is extended through the application's hooks.py without modifying Frappe core files.
+## 2. Document Events & Hooks
 
-The Test Document DocType uses the after_insert document event:
+Added an `after_insert` document event in `hooks.py`.
 
-doc_events = {
+When a new Test Document is created, the custom function is executed and displays:
 
-    "Test Document": {
+`Hook executed!`
 
-        "after_insert": "library_management.api.custom_logic",
+### Verify
 
-    },
+Go to:
 
-}
+**Desk → Test Document → New**
 
-The corresponding custom function is defined in library_management/api.py:
+Create and save a new Test Document.
 
-def custom_logic(doc, method):
+Verify that:
 
-    frappe.msgprint("Hook executed!")
+`Hook executed!`
 
-When a new Test Document is created, the after_insert event triggers the custom function and displays:
+is displayed.
 
-Hook executed!
+**Hook:**  
+`library_management/hooks.py`
 
-Concepts Demonstrated
+**Function:**  
+`library_management/api.py`
 
-DocType Controller
+---
 
-before_save lifecycle event
+# Assignment 2 — Python API: Document, Database & Query Builder
 
-doc_events hooks
+This assignment demonstrates Whitelisted APIs, Query Builder, Document API, Database API, and Client Scripts.
 
-after_insert document event
+## 1. Whitelisted Python API
 
-Custom Python functions
+Created a Whitelisted Python method named `document_api_demo()`.
 
-frappe.msgprint()
+The method is called from the Desk using `frappe.call()`.
 
-Extending Frappe behavior without modifying core framework files
+**Code:**  
+`library_management/custom_module/doctype/test_document/test_document.py`
 
-Assignment: Python API — Document, Database & Query Builder
+## 2. Query Builder
 
-This assignment demonstrates the use of Frappe's Whitelisted API, Query Builder, Document API, and Database API.
+Used `frappe.qb` to join **Test Document** and **Test Related Document** and retrieve the required fields.
 
-Part 1 — Custom Whitelisted API
+### Verify
 
-Created a whitelisted Python method in the Test Document controller.
+Open a **Test Related Document** and click:
 
-@frappe.whitelist()
-def document_api_demo(related_document):
+**Run Document API**
 
-Part 2 — Query Builder
+The Query Builder runs as part of the API.
 
-Used frappe.qb to join Test Document and Test Related Document and retrieve the required fields.
+## 3. Document API
 
-TestDocument = frappe.qb.DocType("Test Document")
-TestRelatedDocument = frappe.qb.DocType("Test Related Document")
+Used `frappe.get_doc()` to fetch the linked Test Document, update its Description, and save it.
 
-results = (
-    frappe.qb.from_(TestDocument)
-    .join(TestRelatedDocument)
-    .on(TestRelatedDocument.test_document == TestDocument.name)
-    .select(
-        TestDocument.name.as_("test_document"),
-        TestDocument.description,
-        TestRelatedDocument.name.as_("related_document"),
-        TestRelatedDocument.status,
-    )
-    .where(TestRelatedDocument.name == related_document)
-    .limit(10)
-    .run(as_dict=True)
-)
+The Description is updated to:
 
-Part 3 — Document API
+`Updated using Document API`
 
-Used frappe.get_doc() to fetch a Test Document, update its description, and save it.
+### Verify
 
-first_document = frappe.get_doc(
-    "Test Document",
-    results[0]["test_document"]
-)
+1. Open a **Test Related Document**.
+2. Click **Run Document API**.
+3. Open the linked **Test Document**.
+4. Check the Description.
 
-first_document.description = "Updated using Document API"
-first_document.save()
+It should show:
 
-Part 4 — Database API
+`Updated using Document API`
 
-Used frappe.db.set_value() to update the status of the related documents.
+## 4. Database API
 
-for row in results:
-    frappe.db.set_value(
-        "Test Related Document",
-        row["related_document"],
-        "status",
-        "Processed",
-        update_modified=False,
-    )
+Used `frappe.db.set_value()` to update the status of the related document.
 
-Part 5 — Desk Trigger
+The status changes from:
 
-Added a Run Document API button to the Test Related Document form to trigger the whitelisted Python method.
+`Pending → Processed`
 
-frappe.call({
-    method: "library_management.custom_module.doctype.test_document.test_document.document_api_demo",
-    args: {
-        related_document: frm.doc.name
-    }
-});
+### Verify
 
-The API updates the status from:
+Open the **Test Related Document** after clicking **Run Document API**.
 
-Pending → Processed
+The Status should be:
 
-and updates the linked Test Document description using the Document API.
+`Processed`
 
-Concepts Demonstrated
+## 5. Client Script
 
-@frappe.whitelist()
+Added a **Run Document API** button to the Test Related Document form.
 
-Query Builder (frappe.qb)
+The button uses `frappe.call()` to execute the Whitelisted Python method.
 
-Query Builder JOIN
+### Verify
 
-frappe.get_doc()
+Go to:
 
-Document .save()
+**Desk → Test Related Document**
 
-frappe.db.set_value()
+Open a document and click:
 
-Client Script
+**Run Document API**
 
-frappe.call()
+The linked documents should be updated.
 
-Working with related DocTypes
+---
 
-Returning API results
+# Assignment 3 — Scheduled Tasks
 
-Installation
+This assignment demonstrates Frappe Scheduler Events and scheduled Python tasks.
+
+## 1. Daily Scheduled Tasks
+
+Added two daily scheduled tasks in `hooks.py`:
+
+- `library_management.tasks.daily_check`
+- `library_management.custom_module.tasks.daily_maintenance`
+
+Both scheduled tasks were tested successfully.
+
+## 2. Scheduler Status
+
+The scheduler is enabled for the site.
+
+### Verify
+
+Run:
+
+```bash
+bench --site test-library.local scheduler status
+```
+
+Expected output:
+
+```text
+Scheduler is enabled for site test-library.local
+```
+
+## 3. Test Scheduled Tasks Manually
+
+The individual scheduled methods can be triggered manually for testing.
+
+### Daily Check
+
+Run:
+
+```bash
+bench --site test-library.local trigger-scheduler-event library_management.tasks.daily_check
+```
+
+Expected output:
+
+```text
+Daily scheduler task executed.
+```
+
+### Daily Maintenance
+
+Run:
+
+```bash
+bench --site test-library.local trigger-scheduler-event library_management.custom_module.tasks.daily_maintenance
+```
+
+The task executes successfully.
+
+## Scheduler Code
+
+**Hooks:**  
+`library_management/hooks.py`
+
+**Daily Check:**  
+`library_management/tasks.py`
+
+**Daily Maintenance:**  
+`library_management/custom_module/tasks.py`
+
+---
+
+# Installation
 
 You can install this app using the Bench CLI:
 
+```bash
 cd $PATH_TO_YOUR_BENCH
 
 bench get-app $URL_OF_THIS_REPO --branch version-16
 
 bench --site $SITE_NAME install-app library_management
+```
 
-License
+# License
 
 MIT
