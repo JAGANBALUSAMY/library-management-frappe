@@ -92,3 +92,6 @@ def get_book_details(book_name):
 
     b.availability = "Available" if (b.available_copies or 0) > 0 and b.published else "Unavailable"
     return b
+
+def custom_logic(doc, method):
+    frappe.msgprint("Hook executed!")

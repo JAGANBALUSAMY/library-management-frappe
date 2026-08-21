@@ -154,17 +154,20 @@ has_permission = {
 # Hook on document methods and events
 
 doc_events = {
-	"Library Book": {
-		"before_save": "library_management.tasks.before_book_save",
-		"on_update": "library_management.utils.cache.invalidate_on_book_change",
-		"after_insert": "library_management.utils.cache.invalidate_on_book_change",
-	},
-	"Library Borrow Record": {
-		"on_update": [
-			"library_management.utils.cache.invalidate_on_borrow_change",
-			"library_management.utils.integrations.google_calendar.sync_borrow_due_date",
-		]
-	},
+    "Library Book": {
+        "before_save": "library_management.tasks.before_book_save",
+        "on_update": "library_management.utils.cache.invalidate_on_book_change",
+        "after_insert": "library_management.utils.cache.invalidate_on_book_change",
+    },
+    "Library Borrow Record": {
+        "on_update": [
+            "library_management.utils.cache.invalidate_on_borrow_change",
+            "library_management.utils.integrations.google_calendar.sync_borrow_due_date",
+        ]
+    },
+    "Test Document": {
+        "after_insert": "library_management.api.custom_logic",
+    },
 }
 
 # Link field display formatters
