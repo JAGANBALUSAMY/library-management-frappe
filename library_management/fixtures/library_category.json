@@ -1,0 +1,38 @@
+[
+ {
+  "category_name": "Fantasy",
+  "description": "Fantasy Books",
+  "docstatus": 0,
+  "doctype": "Library Category",
+  "modified": "2026-08-05 17:29:00.211001",
+  "name": "LIB-CAT-00002",
+  "naming_series": "LIB-CAT-.#####"
+ },
+ {
+  "category_name": "Programming",
+  "description": "It is about coding language",
+  "docstatus": 0,
+  "doctype": "Library Category",
+  "modified": "2026-08-06 11:14:26.502300",
+  "name": "LIB-CAT-00004",
+  "naming_series": "LIB-CAT-.#####"
+ },
+ {
+  "category_name": "Science Fiction",
+  "description": "Sci-Fi Books",
+  "docstatus": 0,
+  "doctype": "Library Category",
+  "modified": "2026-08-05 17:28:59.615139",
+  "name": "LIB-CAT-00001",
+  "naming_series": "LIB-CAT-.#####"
+ },
+ {
+  "category_name": "Technical",
+  "description": "Computer Science and Programming",
+  "docstatus": 0,
+  "doctype": "Library Category",
+  "modified": "2026-08-05 17:29:00.217739",
+  "name": "LIB-CAT-00003",
+  "naming_series": "LIB-CAT-.#####"
+ }
+]

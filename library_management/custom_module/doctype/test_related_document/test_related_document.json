@@ -1,0 +1,54 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "autoname": "prompt",
+  "creation": "2026-08-21 12:02:01.784403",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "test_document",
+    "status"
+  ],
+  "fields": [
+    {
+      "fieldname": "test_document",
+      "fieldtype": "Link",
+      "label": "Test Document",
+      "options": "Test Document"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Data",
+      "label": "Status"
+    }
+  ],
+  "links": [],
+  "modified": "2026-08-21 12:54:22.846151",
+  "modified_by": "Administrator",
+  "module": "Custom Module",
+  "name": "Test Related Document",
+  "owner": "admin@gmail.com",
+  "permissions": [
+    {
+      "amend": 0,
+      "cancel": 0,
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "if_owner": 0,
+      "import": 0,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "select": 0,
+      "share": 1,
+      "submit": 0,
+      "write": 1
+    }
+  ],
+  "states": [],
+  "track_changes": 0
+}
