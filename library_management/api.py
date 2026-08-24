@@ -95,3 +95,11 @@ def get_book_details(book_name):
 
 def custom_logic(doc, method):
     frappe.msgprint("Hook executed!")
+
+@frappe.whitelist()
+def create_task(task_subject):
+    task = frappe.new_doc("Task")
+    task.subject = task_subject
+    task.save()
+
+    return task.name

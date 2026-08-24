@@ -26,7 +26,8 @@ The Description will automatically become:
 
 `Default Description`
 
-**Code:**  
+**Code:**
+
 `library_management/library/doctype/test_document/test_document.py`
 
 ## 2. Document Events & Hooks
@@ -51,10 +52,12 @@ Verify that:
 
 is displayed.
 
-**Hook:**  
+**Hook:**
+
 `library_management/hooks.py`
 
-**Function:**  
+**Function:**
+
 `library_management/api.py`
 
 ---
@@ -69,7 +72,8 @@ Created a Whitelisted Python method named `document_api_demo()`.
 
 The method is called from the Desk using `frappe.call()`.
 
-**Code:**  
+**Code:**
+
 `library_management/custom_module/doctype/test_document/test_document.py`
 
 ## 2. Query Builder
@@ -200,14 +204,94 @@ The task executes successfully.
 
 ## Scheduler Code
 
-**Hooks:**  
+**Hooks:**
+
 `library_management/hooks.py`
 
-**Daily Check:**  
+**Daily Check:**
+
 `library_management/tasks.py`
 
-**Daily Maintenance:**  
+**Daily Maintenance:**
+
 `library_management/custom_module/tasks.py`
+
+---
+
+# Assignment 5 — Python API Utilities
+
+This assignment demonstrates secure data fetching, optimized database access, server time, and REST API handling.
+
+## 1. Whitelisted Python API
+
+Created a Whitelisted Python method named `get_recent_todos()`.
+
+The method is available through the Frappe REST API.
+
+**Code:**
+
+`library_management/custom_module/api.py`
+
+## 2. Secure ToDo Fetching
+
+Used `frappe.get_list()` to fetch the 5 most recently created **ToDo** records.
+
+Only the required fields are fetched:
+
+- `name`
+- `description`
+- `owner`
+
+The records are ordered by creation time, with the newest records returned first.
+
+## 3. Owner Email
+
+Used `frappe.db.get_value()` to fetch the email address of each ToDo owner's **User** record.
+
+The email is included with each returned record.
+
+## 4. Server Timestamp
+
+Used `frappe.utils.now()` to get the current server timestamp.
+
+The timestamp is included in the API response.
+
+## 5. REST API Verification
+
+The endpoint was tested directly through the browser while logged in.
+
+Open:
+
+```text
+http://test-library.local:8000/api/method/library_management.custom_module.api.get_recent_todos
+```
+
+The response contains:
+
+- Current timestamp
+- Recently created ToDo records
+- ToDo name
+- Description
+- Owner
+- Owner email
+
+Example response:
+
+```json
+{
+    "message": {
+        "timestamp": "2026-08-21 15:36:57.029074",
+        "records": [
+            {
+                "name": "o2nfgsf7oh",
+                "description": "<div class=\"ql-editor read-mode\"><p>Test ToDo 3</p></div>",
+                "owner": "admin@gmail.com",
+                "email": "admin@gmail.com"
+            }
+        ]
+    }
+}
+```
 
 ---
 
