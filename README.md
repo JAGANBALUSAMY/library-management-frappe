@@ -295,6 +295,118 @@ Example response:
 
 ---
 
+---
+
+# Assignment 6 — JavaScript Frappe Dialog & Router
+
+Implemented a JavaScript dialog using `frappe.ui.Dialog` to collect a **First Name**.
+
+The entered value is passed through `frappe.route_options` and used with `frappe.new_doc('Contact')` to pre-fill the **First Name** field in a new Contact document.
+
+### Verify
+
+Open the **Desk browser console** and run the JavaScript implementation.
+
+Enter a First Name and click **Create Contact**.
+
+Verify that:
+
+**Desk → Contact → New**
+
+opens with the entered First Name automatically populated.
+
+---
+
+# Assignment 7 — JavaScript Frappe Call
+
+Implemented a frontend dialog for entering a **Task Subject** and connected it to a whitelisted Python method using `frappe.call()`.
+
+The backend method uses `frappe.new_doc('Task')` to create the Task and returns the created document name.
+
+The frontend displays the result using `frappe.msgprint()` with a green success indicator.
+
+### Verify
+
+Open the **Desk browser console** and run the JavaScript implementation.
+
+Enter a Task Subject and click **Create Task**.
+
+The `frappe.call()` request reaches the backend method.
+
+**Note:** Task creation cannot currently be completed on this site because the **Task DocType is not available**. The frontend dialog and backend API call are implemented and tested up to the document creation step.
+
+---
+
+# Assignment 8 — Custom Bench CLI Command
+
+Implemented a custom Bench CLI command in the Library Management app.
+
+Created:
+
+`library_management/commands.py`
+
+The command uses Click and is registered through the app's `commands` list.
+
+### Verify
+
+From the Bench directory, run:
+
+```bash
+bench --help
+```
+
+Verify that the custom command appears in the available Bench commands.
+
+Then run:
+
+```bash
+bench hello-custom
+```
+
+Expected output:
+
+```text
+Hello from the custom Bench CLI!
+```
+
+---
+
+# Assignment 9 — Bench CLI Multitenancy
+
+Configured a new site using **port-based multitenancy**.
+
+Implemented:
+
+* Disabled DNS-based multitenancy.
+* Created the `testsite.local` site.
+* Assigned port `82` to the site.
+* Added the custom domain `internal.testsite.local`.
+* Regenerated the Nginx configuration.
+* Reloaded Nginx.
+
+### Verify
+
+The site configuration can be checked at:
+
+`sites/testsite.local/site_config.json`
+
+The configuration contains:
+
+```json
+"nginx_port": 82,
+"domains": [
+    "internal.testsite.local"
+]
+```
+
+The site can be accessed using:
+
+```text
+http://internal.testsite.local:82
+```
+
+---
+
 # Installation
 
 You can install this app using the Bench CLI:
