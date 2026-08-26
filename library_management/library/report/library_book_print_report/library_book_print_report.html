@@ -1,0 +1,33 @@
+<div class="print-format">
+
+    <h2>Library Book Report</h2>
+
+    <table class="table table-bordered">
+
+        <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Issue Date</th>
+                <th>Book Price</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for (var i = 0; i < data.length; i++) { %}
+
+            <tr>
+                <td>{%= data[i].book_name %}</td>
+                <td>{%= data[i].author %}</td>
+                <td>{%= frappe.datetime.str_to_user(data[i].issue_date) %}</td>
+                <td>{%= format_currency(data[i].book_price) %}</td>
+            </tr>
+
+            {% } %}
+
+        </tbody>
+
+    </table>
+
+</div>
