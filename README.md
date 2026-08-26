@@ -463,165 +463,180 @@ http://internal.testsite.local:82
 ---
 
 
+---
 
-**# Assignment 10 — Library Book Print Report
+# Assignment 10 — Library Book Print Report
 
-Implemented a custom Script Report with a custom HTML print format for the Library Book DocType.
+Implemented a custom **Script Report** with a custom HTML print format for the Library Book DocType.
 
-1. Script Report
+## 1. Script Report
 
-Created Library Book Print Report.
-
-Verify:
-
-Desk → Report → Library Book Print Report
+Created the **Library Book Print Report**.
 
 The report displays:
 
-Book Name
+- Book Name
+- Author
+- Issue Date
+- Book Price
 
-Author
+**Files:**
 
-Issue Date
+`library_management/library/report/library_book_print_report/library_book_print_report.py`
 
-Book Price
+`library_management/library/report/library_book_print_report/library_book_print_report.js`
 
-Files:
+`library_management/library/report/library_book_print_report/library_book_print_report.json`
 
-library_management/library/report/library_book_print_report/library_book_print_report.py
+### Verify
 
-library_management/library/report/library_book_print_report/library_book_print_report.js
+Go to:
 
-library_management/library/report/library_book_print_report/library_book_print_report.json
+**Desk → Report → Library Book Print Report**
 
-2. Report Print Format
+The report displays the Library Book data in the report table.
 
-Created the report HTML print format:
+## 2. Report Print Format
 
-library_management/library/report/library_book_print_report/library_book_print_report.html
+Created a custom HTML print format for the report:
 
-The template uses Frappe micro-templating with:
+`library_management/library/report/library_book_print_report/library_book_print_report.html`
 
-<% %> loop syntax
+The template uses Frappe JavaScript micro-templating with:
 
-Double-quoted JavaScript strings
+- `<% %>` loop syntax
+- `data` array values
+- Bootstrap 3 table classes
+- Issue Date formatting
+- Book Price currency formatting
 
-Bootstrap 3 table classes
+### Verify
 
-data array values
+Go to:
 
-filters.author
+**Desk → Report → Library Book Print Report → Actions → Print → Submit**
 
-Date formatting
+The generated print output displays the Library Book report data.
 
-Currency formatting
+---
 
-Verify:
+# Assignment 11 — Jinja & Report Print Formats
 
-Desk → Report → Library Book Print Report → Actions → Print → Submit
+Implemented a **Jinja Print Format** for the Library Book DocType and a custom JavaScript micro-template for the Library Book Report.
 
-The generated print report displays the Library Book data.
+## 1. Jinja Print Format
 
-3. Author Filter
-
-Added an Author filter to the report.
-
-The filter supports case-insensitive partial matching.
-
-Verify:
-
-Desk → Report → Library Book Print Report
-
-Enter values such as:
-
-John
-
-john
-
-Smith
-
-The matching author records are displayed.
-
-Assignment 11 — Jinja & Report Print Formats
-
-Implemented a Jinja Print Format for the Library Book DocType and a micro-template Report Print Format.
-
-1. Jinja Print Format
-
-Created Library Book Jinja Print Format.
+Created the **Library Book Jinja Print Format**.
 
 Configured it as:
 
-Print Format For: DocType
+- Print Format For: DocType
+- DocType: Library Book
+- Print Format Type: Jinja
+- Custom Format: Enabled
+- Standard: Yes
 
-DocType: Library Book
+The print format uses Jinja templating and Bootstrap 3 classes to display:
 
-Print Format Type: Jinja
+- Book Name
+- Author
+- Issue Date
+- Book Price
 
-Custom Format: Enabled
+**File:**
 
-Standard: Yes
+`library_management/library/print_format/library_book_jinja_print_format/library_book_jinja_print_format.json`
 
-The format uses Jinja templating and Bootstrap 3 classes to display:
+### Verify
 
-Book Name
+Go to:
 
-Author
+**Desk → Library Book → open a record → Print → Library Book Jinja Print Format**
 
-Issue Date
+The custom Jinja print format displays the Library Book details.
 
-Book Price
+## 2. Report Print Format
 
-File:
-
-library_management/library/print_format/library_book_jinja_print_format/library_book_jinja_print_format.json
-
-Verify:
-
-Desk → Library Book → open a record → Print → select Library Book Jinja Print Format
-
-2. Report Print Format
-
-Updated Library Book Print Report with a custom HTML print format using Frappe's JavaScript micro-templating.
+Updated the Library Book Print Report with a custom HTML print format using Frappe JavaScript micro-templating.
 
 The template:
 
-Uses <% %> to loop through data
+- Uses `<% %>` to loop through the `data` array
+- Uses double-quoted JavaScript strings
+- Uses Bootstrap 3 table classes
+- Displays the selected `Author` filter
+- Formats Issue Date
+- Formats Book Price
 
-Uses strictly double quotes in JavaScript logic
+**File:**
 
-Uses Bootstrap 3 table classes
+`library_management/library/report/library_book_print_report/library_book_print_report.html`
 
-Displays the selected author filter
+### Verify
 
-Formats Issue Date
+Go to:
 
-Formats Book Price
+**Desk → Report → Library Book Print Report**
 
-File:
+Enter an Author value such as:
 
-library_management/library/report/library_book_print_report/library_book_print_report.html
+`John Smith`
 
-Verify:
+Then:
 
-Desk → Report → Library Book Print Report → Actions → Print → Submit
+**Actions → Print → Submit**
 
 The print output displays the report data and the selected Author filter.
 
-Installation**
+---
 
-You can install this app using the Bench CLI:
+# Assignment 12 — Dynamic Team Webpage
 
-```bash
+Created a dynamic webpage that displays all enabled users in the Frappe site.
 
-cd $PATH_TO_YOUR_BENCH
+## 1. Team Webpage
 
-bench get-app $URL_OF_THIS_REPO --branch version-16
+Created the `/team` webpage using a Jinja HTML template.
 
-bench --site $SITE_NAME install-app library_management
+**Files:**
 
-```
+`library_management/www/team.html`
 
-# License
+`library_management/www/team.py`
 
-MIT
+## 2. Context Processor
+
+Created the `get_context(context)` method in `team.py`.
+
+The context processor uses `frappe.get_all()` to fetch enabled users with the following fields:
+
+- `full_name`
+- `email`
+
+The context also sets:
+
+- `context.title = "Our Team"`
+- `context.no_cache = True`
+
+## 3. Jinja User List
+
+The `team.html` template uses Jinja templating to iterate over the users and display their:
+
+- Full Name
+- Email
+
+The users are displayed in an HTML list.
+
+### Verify
+
+Open:
+
+`http://test-library.local:8001/team`
+
+The page displays:
+
+**Our Team**
+
+followed by the list of enabled users and their email addresses.
+
+---
