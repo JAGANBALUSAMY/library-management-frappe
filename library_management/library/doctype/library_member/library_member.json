@@ -12,7 +12,8 @@
   "email",
   "phone",
   "address",
-  "membership_date"
+  "membership_date",
+  "end_date"
  ],
  "fields": [
   {
@@ -51,12 +52,18 @@
    "fieldtype": "Small Text",
    "label": "Address",
    "options": "Library Category"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-07-30 13:04:54.688553",
+ "modified": "2026-09-01 11:52:46.361403",
  "modified_by": "Administrator",
  "module": "Library",
  "name": "Library Member",
@@ -64,60 +71,38 @@
  "owner": "Administrator",
  "permissions": [
   {
-   "role": "Library Administrator",
-   "read": 1,
-   "write": 1,
    "create": 1,
    "delete": 1,
-   "print": 1,
    "email": 1,
-   "report": 1,
-   "import": 1,
    "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Library Administrator",
    "share": 1,
-   "select": 0
+   "write": 1
   },
   {
-   "role": "Library Manager",
-   "read": 1,
-   "write": 1,
    "create": 1,
-   "delete": 0,
-   "print": 1,
    "email": 1,
-   "report": 1,
-   "import": 0,
    "export": 1,
-   "share": 0,
-   "select": 0
-  },
-  {
-   "role": "Librarian",
-   "read": 1,
-   "write": 1,
-   "create": 1,
-   "delete": 0,
    "print": 1,
-   "email": 0,
+   "read": 1,
    "report": 1,
-   "import": 0,
-   "export": 0,
-   "share": 0,
-   "select": 0
+   "role": "Library Manager",
+   "write": 1
   },
   {
-   "role": "Library Member",
+   "create": 1,
+   "print": 1,
    "read": 1,
-   "write": 0,
-   "create": 0,
-   "delete": 0,
-   "print": 0,
-   "email": 0,
-   "report": 0,
-   "import": 0,
-   "export": 0,
-   "share": 0,
-   "select": 0
+   "report": 1,
+   "role": "Librarian",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Library Member"
   }
  ],
  "row_format": "Dynamic",

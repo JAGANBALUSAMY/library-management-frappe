@@ -278,7 +278,7 @@ scheduler_events = {
 # ignore_translatable_strings_from = []
 
 # Fixtures
-fixtures = ["Library Category", "Custom Field"]
+fixtures = ["Library Category", "Custom Field" , "Client Script", "Property Setter", "Print Format", "Workflow", "Workflow State", "Workflow Action"]
 
 update_website_context = "library_management.utils.context_processors.library_context"
 

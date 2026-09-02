@@ -640,3 +640,39 @@ The page displays:
 followed by the list of enabled users and their email addresses.
 
 ---
+
+A# Assignment 13 — User Client Script & Fixtures
+
+Implemented a **Client Script** for the standard **User** DocType.
+
+## 1. Send Welcome Email Button
+
+Created a Client Script that runs on the **User Form** `refresh` event.
+
+The script adds a custom button named:
+
+`Send Welcome Email`
+
+The button is placed under the **Actions** group.
+
+When clicked, it displays:
+
+`Email Sent!`
+
+**Client Script:**
+
+- DocType: `User`
+- Apply To: `Form`
+- Event: `refresh`
+- Enabled: Yes
+
+**Script:**
+
+```javascript
+frappe.ui.form.on('User', {
+    refresh(frm) {
+        frm.add_custom_button('Send Welcome Email', () => {
+            frappe.msgprint('Email Sent!');
+        }, 'Actions');
+    }
+});

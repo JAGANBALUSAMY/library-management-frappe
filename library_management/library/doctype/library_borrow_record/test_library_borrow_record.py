@@ -19,7 +19,7 @@ MEMBER2 = "member2@library.local"
 LIBRARIAN = "librarian@library.local"
 
 
-def make_member(email=None, name=None):
+def make_member(email=None, name=None, end_date=None):
 	email = email or f"member-{random_string(4)}@example.com"
 	name = name or f"Member {random_string(4)}"
 	if frappe.db.exists("Library Member", {"email": email}):
@@ -28,7 +28,8 @@ def make_member(email=None, name=None):
 	doc.member_name = name
 	doc.email = email
 	doc.status = "Active"
-	doc.date_of_membership = frappe.utils.today()
+	doc.membership_date = frappe.utils.today()
+	doc.end_date = end_date or frappe.utils.add_days(frappe.utils.today(), 365)
 	doc.insert(ignore_permissions=True)
 	return doc.name
 
@@ -100,6 +101,12 @@ class TestLibraryBorrowRecord(IntegrationTestCase):
 				make_borrow(self.member2, book.name, status=STATUS_PENDING)
 		finally:
 			frappe.set_user("Administrator")
+
+	def test_expired_membership_rejected(self):
+		book = _book(available_copies=2)
+		member = make_member(email=f"expired-{random_string(4)}@example.com", end_date=frappe.utils.add_days(frappe.utils.today(), -1))
+		with self.assertRaises(ValidationError):
+			make_borrow(member, book.name, status=STATUS_PENDING)
 
 	def test_workflow_issue_decrements_stock(self):
 		book = _book(available_copies=2)

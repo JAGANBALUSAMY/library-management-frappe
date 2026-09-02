@@ -4,6 +4,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils import getdate
 
 LIBRARIAN_ROLES = ("Librarian", "Library Manager", "Library Administrator", "System Manager")
 
@@ -79,6 +80,7 @@ class LibraryBorrowRecord(Document):
 		self.validate_required_fields()
 		self.validate_dates()
 		self.validate_member_allowed()
+		self.validate_membership_active()
 		self.validate_book_availability()
 		self.validate_status_transition()
 		self.apply_status_stock_changes()
@@ -127,6 +129,17 @@ class LibraryBorrowRecord(Document):
 		if self.member != member:
 			frappe.throw(
 				_("You can only create borrow requests for your own membership ({0}).").format(member)
+			)
+
+	def validate_membership_active(self):
+		if not self.member:
+			return
+		member = frappe.get_doc("Library Member", self.member)
+		if member.end_date and getdate(member.end_date) < getdate(frappe.utils.today()):
+			frappe.throw(
+				_("The membership for member '{0}' has expired on {1}. No borrow record can be created.").format(
+					member.member_name, frappe.utils.format_date(member.end_date)
+				)
 			)
 
 	def validate_book_availability(self):
