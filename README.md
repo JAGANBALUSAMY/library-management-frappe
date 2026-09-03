@@ -676,3 +676,82 @@ frappe.ui.form.on('User', {
         }, 'Actions');
     }
 });
+
+---
+
+# Assignment 14 — Portal Development & Integration Testing
+
+Implemented a dynamic Articles portal page and an integration test for the Article DocType.
+
+## 1. Articles Portal Page
+
+Created a `/articles` webpage that displays all Article records with the status `Published`.
+
+The page displays:
+
+- `Latest News` heading
+- Published article titles
+- Links to each article using `/articles/{{ article.name }}`
+
+**Files:**
+
+`library_management/www/articles.py`
+
+`library_management/www/articles.html`
+
+**Verify**
+
+Open:
+
+`http://test-library.local:8000/articles`
+
+The page should display the published articles under:
+
+**Latest News**
+
+## 2. Article DocType
+
+Created the **Article** DocType under the **Library** module.
+
+Fields:
+
+- **Title** — Data, Mandatory
+- **Status** — Select (`Draft`, `Published`)
+
+**Files:**
+
+`library_management/library/doctype/article/article.json`
+
+`library_management/library/doctype/article/article.py`
+
+`library_management/library/doctype/article/article.js`
+
+**Verify**
+
+Go to:
+
+**Desk → Article**
+
+Create or open an Article and verify the Title and Status fields.
+
+## 3. Integration Test
+
+Created an integration test using `FrappeTestCase`.
+
+The test creates an Article with:
+
+- Title: `My First Test`
+- Status: `Published`
+
+It verifies the title and confirms that the Article exists in the database using `frappe.db.exists()`.
+
+**Test File:**
+
+`library_management/library/doctype/article/test_article.py`
+
+**Verify**
+
+Run:
+
+```bash
+bench run-tests --app library_management
